@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import keras
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization, LayerNormalization
+from tensorflow.keras.layers import Dense, Activation, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization, LayerNormalization, Normalization, Resizing, RandomFlip
 from keras.layers import Dense, Conv2D, MaxPool2D , Flatten, Dropout, UpSampling2D
 from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import ModelCheckpoint, EarlyStopping, LearningRateScheduler, TensorBoard
@@ -21,6 +21,7 @@ from sklearn.model_selection import train_test_split
 import pickle
 from PIL import Image, ImageEnhance
 from tqdm import tqdm
+import config
 
 
 # Define the model
@@ -104,14 +105,14 @@ if __name__ == "__main__":
     initial_lr = float(sys.argv[11]) # Initial learning rate
     data_path = sys.argv[12] # Path to the data (dataset python object)
     data_from_file = sys.argv[13] == 'True' # True if you want to load the dataset from a file
-    data_augmentation = sys.argv[14] == 'True' # True if you want to use data augmentation
+    data_augmentation_bool = sys.argv[14] == 'True' # True if you want to use data augmentation
     early_stopping = sys.argv[15] == 'True' # True if you want to use early stopping
 
     # print the arguments
     print("------------------- SESSION INFO --------------------")
     print("Tensorboard: ", 'ON' if tensorboard else 'OFF') 
     print("Model Path: ", model_path)
-    print("Data Augmentation: ", 'ON' if data_augmentation else 'OFF')
+    print("Data Augmentation: ", 'ON' if data_augmentation_bool else 'OFF')
     print("Early Stopping: ", 'ON' if early_stopping else 'OFF')
     print("Epochs: ", epochs)
     print("Batch Size: ", batch_size)
@@ -183,52 +184,20 @@ if __name__ == "__main__":
         callbacks.append(tb)
 
     # fit the model
-    if data_augmentation:
-        print("Before ", X_train.shape)
+    if data_augmentation_bool:
+        data_augmentation = keras.Sequential(
+            [
+                Normalization(),
+                Resizing(config.IMAGE_SIZE, config.IMAGE_SIZE),
+                RandomFlip("horizontal")
+                #layers.RandomRotation(factor=0.02),
+                #layers.RandomZoom(height_factor=0.2, width_factor=0.2),
+            ],
+            name="data_augmentation",
+        )
+        # Compute the mean and the variance of the training data for normalization.
+        data_augmentation.layers[0].adapt(X_train)
 
-        # create data generator
-        datagen = ImageDataGenerator(
-            horizontal_flip=True, # horizontal flip
-            brightness_range=[0.85,1.25], # brightness
-            zoom_range=[0.85,1.0])
-
-        # fit parameters from data
-        datagen.fit(X_train)
-
-        N = X_train.shape[0]
-
-        X2 = np.zeros((N, image_size, image_size, n_channels))
-        y2 = np.zeros((N, train_data.class_names.shape[0]))
-
-        # Configure batch size and retrieve one batch of images
-        print("\tAUGMENTING DATA x2...\n")
-        for X_batch, y_batch in datagen.flow(X_train, y_train, batch_size=N):
-            for i in tqdm(range(0, N, 1)):
-                X2[i,:,:,:] = X_batch[i].reshape(image_size, image_size, n_channels)/255.
-                y2[i] = y_batch[i]
-            # De esta manera paramos de generar imagenes aleatoriamente
-            break
-            
-        X_train = np.concatenate((X_train,X2))
-        y_train = np.concatenate((y_train,y2))
-
-        X3 = np.zeros((N, image_size, image_size, n_channels))
-        y3 = np.zeros((N, train_data.class_names.shape[0]))
-
-        # Configure batch size and retrieve one batch of images
-        print("\tAUGMENTING DATA x2 (2)...\n")
-        for X_batch, y_batch in datagen.flow(X_train, y_train, batch_size=N):
-            for i in tqdm(range(0, N, 1)):
-                X3[i,:,:,:] = X_batch[i].reshape(image_size, image_size, n_channels)/255.
-                y3[i] = y_batch[i]
-            # De esta manera paramos de generar imagenes aleatoriamente
-            break
-            
-        X_train = np.concatenate((X_train,X3))
-        y_train = np.concatenate((y_train,y3))
-
-        print("After ",X_train.shape)
-        
         print("\tTRAINING...\n")
         
         history = model.fit(

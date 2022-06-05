@@ -3,9 +3,10 @@ import os
 from os.path import exists
 import traceback
 from tqdm import tqdm
+import sys
 
-root = "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/DataAlfons/"
-dest = "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/Splitted/"
+root = sys.argv[1] # "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/DataAlfons/"
+dest = sys.argv[2] # "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/Splitted/"
 
 for dirname, _, filenames in tqdm(list(os.walk(root))):
     for filename in filenames:
@@ -20,7 +21,8 @@ for dirname, _, filenames in tqdm(list(os.walk(root))):
         height, width, n_channel = img.shape
 
         if height > width: # if the image is taller than it is wide save and continue
-            imageio.imsave(dest+class_name+"/"+filename, img)
+            path_c = dest+class_name+"/"+filename
+            if not exists(path_c): imageio.imsave(path_c, img)
             continue
 
         # Cut the image in half => Adding margins to the image

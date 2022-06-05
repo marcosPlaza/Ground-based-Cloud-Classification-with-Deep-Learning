@@ -1,3 +1,4 @@
+import config
 import pickle
 import os
 import numpy as np 
@@ -8,48 +9,49 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 """
-
 DataLoader class
 
 This class is used to load the data from the dataset (train or test exclusively).
 
 We need a directory that at the same time stores the images' subdirectories.
 Each of the subdirectories must have the name of the corresponding class.
-
 """
-
 class DataLoader():    
     def __init__(self):
         self.image_size = None
         self.n_channels = None
-        self.abs_path = None
-        self.alt_classes = None # dictionary with the alternative classes
+        self.dataset_path = None
+        self.alt_classes = None # dictionary with the alternative classes 
 
         self.X = None
         self.y = None
         self.class_names = None
 
-    @classmethod
     def load_from_file(self, data_path):
         with open(data_path, 'rb') as f:
             data = pickle.load(f)
 
         self.image_size = data.image_size
         self.n_channels = data.n_channels
-        self.abs_path = data.abs_path
-        self.alt_classes = data.alt_classes # dictionary with the alternative classes
+        self.dataset_path = data.dataset_path
+        self.alt_classes = data.alt_classes
 
         self.X = data.X
         self.y = data.y
         self.class_names = data.class_names
     
-    @classmethod
-    def load_data(self, abs_path, image_size, n_channels, alt_classes=None, gaussian=True):
+    def load_data(self, dataset_path, image_size, n_channels, alt_classes=None, gaussian=True):
+        # setting the class attributes
+        self.image_size = image_size
+        self.n_channels = n_channels
+        self.dataset_path = dataset_path
+        self.alt_classes = alt_classes
+
         N = 0
         labels = []
 
         # first we need to get labels and dimension of the dataset
-        for dirname, _, filenames in os.walk(self.abs_path):
+        for dirname, _, filenames in os.walk(self.dataset_path):
             for filename in filenames:
                 if filename == '.DS_Store': continue
 
@@ -67,7 +69,7 @@ class DataLoader():
 
         count = 0
 
-        for dirname, _, filenames in tqdm(list(os.walk(self.abs_path))):
+        for dirname, _, filenames in tqdm(list(os.walk(self.dataset_path))):
             for filename in filenames:
                 if filename == '.DS_Store': continue
 
@@ -84,11 +86,17 @@ class DataLoader():
 
         self.class_names = np.unique(labels)
         self.y = preprocessing.label_binarize(labels, classes=list(self.class_names))
+        
+        if config.model == 'ViT':
+            tmp = np.where(self.y == 1)
+            self.y = np.vstack(tmp[1])
+            self.y = self.y.astype('int32')
+
 
 if __name__ == "__main__":
-    """
-    data = DataLoader(abs_path="/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/Swimcat-extend/", image_size=227, n_channels=3, alt_classes=None)
-    data.load_data()
+
+    data = DataLoader()
+    data.load_data("/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/Swimcat-extend/", 227, 3)
 
     print("X shape: ", data.X.shape)
     print("y shape: ", data.y.shape)
@@ -101,7 +109,10 @@ if __name__ == "__main__":
         pickle.dump(data, datafile, protocol=pickle.HIGHEST_PROTOCOL)
 
     print("\tDATA SAVED to {}\n".format("./Data/swimcatdataset.data"))
-    """
 
+    """
     data = DataLoader()
     data.load_from_file("./Data/swimcatdataset.data")
+    plt.imshow(data.X[0])
+    plt.show() 
+    """

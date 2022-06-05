@@ -1,5 +1,5 @@
 #!/bin/bash
-python TrainingPipelineCNN.py True True False True "./Models/SwimCat_lre-5_500.h5" "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/Splitted" "./Models/FabraTest5Clases.h5" "./Historics/FabraTest5Clases_History.pkl" 600 8 1e-5 "./Data/swimcatdataset.data" False True False
+python TrainingPipelineCNN.py True True False False "./Models/xxx.h5" "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/Swimcat-extend" "./Models/SwimCatDataTest.h5" "./History/SwimCatDataTest_History.pkl" 100 8 1e-3 "./Data/swimcatdataset.data" False True False
 
 #   tensorboard = sys.argv[1] == 'True' 
 #   save_historic = sys.argv[2] == 'True'
