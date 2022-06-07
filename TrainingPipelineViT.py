@@ -195,6 +195,7 @@ if __name__ == "__main__":
             ],
             name="data_augmentation",
         )
+        
         # Compute the mean and the variance of the training data for normalization.
         data_augmentation.layers[0].adapt(X_train)
 

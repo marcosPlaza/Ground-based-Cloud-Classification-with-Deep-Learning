@@ -23,8 +23,7 @@ data_augmentation = Sequential(
                 RandomFlip("horizontal")
                 #layers.RandomRotation(factor=0.02),
                 #layers.RandomZoom(height_factor=0.2, width_factor=0.2),
-            ], 
-            name="data_augmentation")
+            ], name="data_augmentation")
         
 # Compute the mean and the variance of the training data for normalization.
 data_augmentation.layers[0].adapt(X_train)
@@ -294,6 +293,7 @@ def run_experiment(model, evaluate=False):
 
     return history
 
+# todo not working yet
 if __name__ == "__main__":
     # Run experiments with the vanilla ViT
     vit = create_vit_classifier(vanilla=True)
