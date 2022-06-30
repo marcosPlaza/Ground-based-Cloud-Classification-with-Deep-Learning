@@ -1,4 +1,4 @@
-model='ViT' # 'CNN'/'ViT'/'MobileViT'/'TripletLoss'
+model='CNN' # 'CNN'/'ViT'/'MobileViT'/'TripletLoss'
 
 # ViT parameters
 

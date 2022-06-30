@@ -1,5 +1,5 @@
 #!/bin/bash
-python TrainingPipelineCNN.py True True False False "./Models/xxx.h5" "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/Swimcat-extend" "./Models/SwimCatDataTest.h5" "./History/SwimCatDataTest_History.pkl" 100 8 1e-3 "./Data/swimcatdataset.data" False True False
+python TrainingPipelineCNN.py True True False False "./Models/Test10_CCSN_TrainTest_Clean_1e-5_noPre_noAug.h5" "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/FabraClouds256_TrainTest_Clean/train" "./Models/Test23_FabraClouds256_TrainTest_Clean_1e-3_PreImagenet_noAug.h5" "./History/Test23_FabraClouds256_TrainTest_Clean_1e-3_PreImagenet_noAug_History.pkl" 200 8 1e-3 "./Data/ccsn256clean_train.data" False False True True
 
 #   tensorboard = sys.argv[1] == 'True' 
 #   save_historic = sys.argv[2] == 'True'
@@ -16,3 +16,4 @@ python TrainingPipelineCNN.py True True False False "./Models/xxx.h5" "/Users/ma
 #   data_from_file = sys.argv[13] == 'True'
 #   data_augmentation = sys.argv[14] == 'True'
 #   early_stopping = sys.argv[15] == 'True'
+#   imagenet = sys.argv[16] == 'True'

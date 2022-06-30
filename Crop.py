@@ -1,14 +1,20 @@
-import imageio
+import matplotlib.pyplot as plt
 import os
 from os.path import exists
 import traceback
 from tqdm import tqdm
 import sys
+from skimage import transform
 
 root = sys.argv[1] # "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/DataAlfons/"
 dest = sys.argv[2] # "/Users/marcosplazagonzalez/Desktop/Ground-based_CloudClassification/Datasets/Splitted/"
+resize = sys.argv[3] == 'True'
+image_size = int(sys.argv[4])
+n_channels = int(sys.argv[5])
 
 for dirname, _, filenames in tqdm(list(os.walk(root))):
+    if dirname == "Clear Sky":
+        continue
     for filename in filenames:
         if filename == '.DS_Store': continue
 
@@ -16,13 +22,13 @@ for dirname, _, filenames in tqdm(list(os.walk(root))):
         splits = dirname.split('/')
         class_name = splits[-1]
 
-        img = imageio.imread(path)
+        img = plt.imread(path)
 
         height, width, n_channel = img.shape
 
         if height > width: # if the image is taller than it is wide save and continue
             path_c = dest+class_name+"/"+filename
-            if not exists(path_c): imageio.imsave(path_c, img)
+            if not exists(path_c): plt.imsave(path_c, img)
             continue
 
         # Cut the image in half => Adding margins to the image
@@ -38,8 +44,14 @@ for dirname, _, filenames in tqdm(list(os.walk(root))):
         path_b = dest+class_name+"/"+withoutext+"_s2.jpg"
         
         try:
-            if not exists(path_a): imageio.imsave(path_a, s1)
-            if not exists(path_b): imageio.imsave(path_b, s2)
+            if not exists(path_a): 
+                if resize:
+                    s1 = transform.resize(s1, (image_size, image_size, n_channels))
+                plt.imsave(path_a, s1)
+            if not exists(path_b): 
+                if resize:
+                    s2 = transform.resize(s2, (image_size, image_size, n_channels))
+                plt.imsave(path_b, s2)
                 
         except Exception:
             # must convert RGBA to RGB
