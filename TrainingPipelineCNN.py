@@ -31,7 +31,7 @@ def build_model_imagenet(input_shape, n_classes):
                          classifier_activation='softmax')
 
     for layer in pre_trained_model.layers:
-        layer.trainable = True
+        layer.trainable = False
 
     model = Sequential()
     model.add(pre_trained_model)
