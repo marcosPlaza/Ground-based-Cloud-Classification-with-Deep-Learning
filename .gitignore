@@ -128,6 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+.DS_Store/
 Data/
 History/
 Images/
@@ -135,3 +136,5 @@ Logs/
 Models/
 TripletModel/
 FirstProject/
+TFM report/
+Presentation/
