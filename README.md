@@ -65,3 +65,21 @@ I would especially like to thank **Jordi Vitrià** for patiently guiding me at a
 To Alfons Puertas for providing the magnificent photographs of the clouds, which although they have served to feed our models, have both a great scientific and artistic value.
 
 I would want to express my gratitude to all of the professors who have con- tributed to the Fundamental Principles of Data Science Master’s Program at the University of Barcelona. I wouldn’t have developed the knowledge or inspiration for this project without this teaching.
+
+### License
+---
+The content developed by Marcos Plaza is distributed under the following license:
+
+    Copyright 2022 Marcos Plaza
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
