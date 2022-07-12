@@ -2,7 +2,9 @@
 
 ### About
 ---
-Clouds are an indicator of climate and weather on earth. The ensemble of radiating effects can be affected by the presence of different cloud types. Therefore, identifying the type of cloud is important when characterising the climate of a region. Furthermore, the classification of the different types or genres of clouds has the clear objective of predicting the weather of a region slightly in advance. So, what we want to solve on this occasion is a cloud classification problem. Traditional cloud classification or identification relies heavily on the experience of observers and is very time-consuming. 
+Clouds are an indicator of climate and weather on earth. The ensemble of radiating effects can be affected by the presence of different cloud types. Therefore, identifying the type of cloud is important when characterising the climate of a region. Furthermore, the classification of the different types or genres of clouds has the clear objective of predicting the weather of a region slightly in advance. So, what we want to solve on this occasion is a cloud classification problem. Traditional cloud classification or identification relies heavily on the experience of observers and is very time-consuming.
+
+[INSERT IMAGE]
 
 We propose to develop a neural network for accurate cloud classification on the ground. To this end, we will explore convolutional neural network architectures, a vision transformer, as well as other models that have greater flexibility from little data.
 
@@ -13,7 +15,7 @@ Cloud classification can be made according to various criteria:
 * development,
 * height and the relationship between vertical dimension and horizontal extension.
 
-We will focus on classifying by it's physical constitution.
+We will focus on classifying by it's **physical constitution**.
 
 Clouds are continuously evolving, often ephemeral, and show an infinite variety of shapes. Moreover, it can be argued that no two clouds are identical. There are, however, a limited number of characteristic shapes, observed worldwide, which allow clouds to be grouped or classified. Specifically, the international cloud classification considers ten basic forms or genera, which form the backbone of the classification. Any cloud observed can be assigned to one and only one of these genera. Species and varieties are then distinguished, as well as other characteristics. This classification system is similar to the taxonomic classification of plants and animals, and similarly uses Latin names, although there are also equivalent names in spoken languages.
 The intermediate forms between two genera or in transition between them are often observed. So this fact adds more difficulty in order to classify one cloud in one of the ten genera. In the following table are some useful descriptions in order to know the main features about them.
@@ -31,6 +33,12 @@ The intermediate forms between two genera or in transition between them are ofte
 | Sc           | Stratocumulus | Rollers or banks of compound dark gray layer cloud        |
 | St           | Stratus       | Low layer cloud, causes fog or fine precipitation         |
 | Ct           | Contrails     | Line-shaped clouds produced by aircraft engine exhausts   |
+
+### About data
+---
+* [Cirrus Cumulus Stratus Nimbus](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/CADDPD)
+* [Swimcat](http://vintage.winklerbros.net/swimcat.html)
+* We have built our own datasets with pictures taken from the ground at the Observatori Fabra in Barcelona. The first one with the ten cloud genera, called **Observatori Fabra Clouds dataset (FabraClouds)**, and then the second (**Observatori Fabra Swimcat dataset (FabraSwimcat)**) preserves the following 5 categories; (a) Clear Sky, (b) Patterned Clouds, (c) Thick Dark Clouds, (d) Thick White Clouds, (e) Veil Clouds.
 
 ### Implemented techniques for classification
 ---
